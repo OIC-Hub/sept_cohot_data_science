@@ -55,8 +55,80 @@ def streamlit_app():
   col4.metric("Avg Credit Score", avg_credit_score)
   col5.metric("Avg Estimated Salary", f"${avg_salary:,.0f}")
 
+  # Row 1 - Geography & Gender
+  left, right = st.columns(2)
+  with left:
+    st.subheader("Customer Churn Distribution by Geography")
+    fig_geo = px.histogram(
+      filtered_df,
+      x="Geography",
+      color="Exited",
+      barmode="group",
+      title="Churn rate accross countries"
+    )
+    st.plotly_chart(fig_geo, use_container_width=True)
 
+  with right:
+    st.subheader("Customer Churn Distribution by Gender")
+    fig_gender = px.histogram(
+      filtered_df,
+      x="Gender",
+      color="Exited",
+      barmode="group",
+      title="Churn rate by gender"
+    )
+    st.plotly_chart(fig_gender, use_container_width=True)
+  
+  #Row 2 - Age and CreditScore
+  left, right = st.columns(2)
+  with left:
+    st.subheader("Age: Customer Churn vs Non-Churn")
+    fig_age = px.box(
+      filtered_df,
+      x="Exited",
+      y="Age",
+      color="Exited",
+      points="all",
+      title="Age Distribution by Churn"
+    )
+    st.plotly_chart(fig_age, use_container_width=True)
 
+  with right:
+    st.subheader("Customer Churn Distribution by CreditScore")
+    fig_credit_score = px.histogram(
+      filtered_df,
+      x="CreditScore",
+      color="Exited",
+      title="Churn rate by credit score"
+    )
+    st.plotly_chart(fig_credit_score, use_container_width=True)
+  
 
+  #Row 3 - NumOfProduct and Tenure
+  left, right = st.columns(2)
+  with left:
+    st.subheader("Number Of Product: Customer Churn vs Non-Churn")
+    fig_product = px.histogram(
+      filtered_df,
+      x="NumOfProducts",
+      barmode="group",
+      color="Exited",
+      title="How product influences churn"
+    )
+    st.plotly_chart(fig_product, use_container_width=True)
+
+  with right:
+    st.subheader("Tenure: Customer Loyalty Indicator")
+    fig_tenure = px.histogram(
+      filtered_df,
+      x="Tenure",
+      color="Exited",
+      title="Tenure Comparison Between Churn & Active Customer"
+    )
+    st.plotly_chart(fig_tenure, use_container_width=True)
+  
+  st.markdown("---")
+  st.subheader("Data Preview")
+  st.dataframe(filtered_df.head(20))
 
 streamlit_app()
